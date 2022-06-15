@@ -4,7 +4,7 @@
 <div align="left">
 
 ## What's that?
-The _Chaotic-AUR Automated Install Script_ (or _CAAIS_ for short) is a program which installs **automatically** Chaotic-AUR! It is based on the commands provided by [the Chaotic-AUR website](https://aur.chaotic.cx/) and does pretty much everything that is shown there.
+The _Chaotic-AUR Automated Install Script_ (or _CAAIS_ for short) is a program which installs Chaotic-AUR **automatically** inside your system! It is based on the commands provided by [the Chaotic-AUR website](https://aur.chaotic.cx/) and does pretty much everything that is shown there.
 
 ## Usage
   
