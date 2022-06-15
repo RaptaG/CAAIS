@@ -10,7 +10,7 @@ if [ $EUID -ne 0 ]; then
 fi
 
 # Installing keys
-echo "Installing the chaotic-aur keys..."
+echo "Installing the Chaotic-AUR keys..."
 pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
 pacman-key --lsign-key FBA220DFC880C036
 
@@ -20,8 +20,8 @@ pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
 echo "Downloading the mirrorlist..."
 pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
 
-# Checking if chaotic-aur is already appended, if not exit
-echo "Appending chaotic AUR to the mirrorlist..."
+# Checking if Chaotic-AUR is already appended in pacman.conf, if not exit
+echo "Appending Chaotic-AUR to the mirrorlist..."
 cd /etc/
 if ! grep "chaotic-aur" /etc/pacman.conf; then
   echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> pacman.conf
@@ -32,7 +32,7 @@ fi
 
 # Refreshing the mirrorlist
 echo "Refreshing the mirrorlists..."
-echo -n "Doing this is needed for chaotic AUR to work but will also cause a system upgrade. Do you wish to continue? [Y/n] " 
+echo -n "Doing this is needed for Chaotic-AUR to work but will also cause a system upgrade. Do you wish to continue? [Y/n] " 
 read answer
 case "$answer" in
   y)
@@ -42,7 +42,7 @@ case "$answer" in
     pacman -Syu
     ;;
   *)
-    echo " You'll now have to refresh the mirrorlists manually, using the sudo pacman -Syu command"
+    echo " You'll now have to refresh the mirrorlists manually, by running 'sudo pacman -Syu'"
     echo "Exiting..."
     exit
     ;;
