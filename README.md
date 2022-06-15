@@ -36,4 +36,5 @@ This project uses the Apache-2.0 License. You can find more aboout this license 
 ## Credits
   
 - [RaptaG](https://github.com/RaptaG), for making this repo (self-credit, lol)
-- [me0wing-katt0](https://github.com/me0wing-katt0), for helping me with an imporant part of the script
+- [me0wing-katt0](https://github.com/me0wing-katt0), for his huge help
+	
