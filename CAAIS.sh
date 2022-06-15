@@ -47,6 +47,6 @@ case "$answer" in
     exit
     ;;
 esac
-echo "Done! Now chaotic AUR should be installed and working in your system!"
+echo "Done! Now Chaotic-AUR should be installed and working in your system!"
 echo "Exiting..."
 exit
