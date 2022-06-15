@@ -25,7 +25,7 @@ After you do that, you need to actually run this script:
 ```
   sudo ./CAAIS.sh
 ```
-That's it! Now Chaotic-AUR should be installed in your system. Feel free to remove after the installation (optional).
+That's it! Now Chaotic-AUR should be installed in your system. Feel free to remove this script after the installation (optional).
   
 ## Feedback/Support
 You can use [the Issues section](https://github.com/RaptaG/CAAIS/issues) to report bugs, make suggestions or even ask a question.
