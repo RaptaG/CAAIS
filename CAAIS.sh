@@ -1,6 +1,6 @@
 #!/bin/bash
-# Made by RaptaG, for your peace of mind :)
-echo "CAAIS, version 1.0 (by RaptaG)"
+# Made by RaptaG and me0wing-katt0, for your peace of mind :)
+echo "CAAIS, version 1.1 (by RaptaG and me0wing-katt0)"
 
 # Root permission checker
 if [ $EUID -ne 0 ]; then
@@ -20,14 +20,19 @@ pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
 echo "Downloading the mirrorlist..."
 pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
 
-# Adapting the Chaotic-AUR mirrorlist
-echo "Adapting the mirrorlist..."
+# Checking if chaotic-aur is already appended, if not exit
+echo "Appending chaotic AUR to the mirrorlist..."
 cd /etc/
-echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> pacman.conf
+if ! grep "chaotic-aur" /etc/pacman.conf; then
+  echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> pacman.conf
+else
+  echo "chaotic AUR is already added, exiting..."
+  exit 1
+fi
 
-# Refreshing mirrorlist
+# Refreshing the mirrorlist
 echo "Refreshing the mirrorlists..."
-echo -n "Doing this is needed for Chaotic-AUR to work but will also cause a system upgrade. Do you wish to continue? [Y/n] " 
+echo -n "Doing this is needed for chaotic AUR to work but will also cause a system upgrade. Do you wish to continue? [Y/n] " 
 read answer
 case "$answer" in
   y)
@@ -37,11 +42,11 @@ case "$answer" in
     pacman -Syu
     ;;
   *)
-  	echo " You'll now have to refresh the mirrorlists manually, using the sudo pacman -Syu command"
+    echo " You'll now have to refresh the mirrorlists manually, using the sudo pacman -Syu command"
     echo "Exiting..."
-	exit
+    exit
     ;;
 esac
-echo "Done! Now Chaotic-AUR should be installed and working in your system!"
+echo "Done! Now chaotic AUR should be installed and working in your system!"
 echo "Exiting..."
 exit
