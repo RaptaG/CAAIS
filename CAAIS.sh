@@ -20,13 +20,13 @@ pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
 echo "Downloading the mirrorlist..."
 pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
 
-# Checking if Chaotic-AUR is already appended in pacman.conf, if not exit
+# Checking if Chaotic-AUR is already appended in pacman.conf, if not skip
 echo "Appending Chaotic-AUR to the mirrorlist..."
 cd /etc/
 if ! grep "chaotic-aur" /etc/pacman.conf; then
   echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> pacman.conf
 else
-  echo "chaotic AUR is already added, exiting..."
+  echo "Chaotic-AUR is already append in pacman.conf, skipping..."
   exit 1
 fi
 
