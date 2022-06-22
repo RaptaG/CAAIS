@@ -48,7 +48,7 @@ main() {
     # Refreshing the mirrorlist
     echo 'Refreshing the mirrorlists...'
 
-    echo -n "Doing this is needed for Chaotic-AUR to work, but will also cause a system upgrade. Do you wish to continue? [Y/n] "
+    echo -n 'Doing this is needed for Chaotic-AUR to work, but will also cause a system upgrade. Do you wish to continue? [Y/n] '
     read answer
 
     case "$answer" in
@@ -56,7 +56,7 @@ main() {
         pacman -Syu
         ;;
     *)
-        echo 'You'll now have to refresh the mirrorlists manually, by running: sudo pacman -Syu'
+        echo "You'll now have to refresh the mirrorlists manually, by running: sudo pacman -Syu"
         caais-exit
         ;;
     esac
