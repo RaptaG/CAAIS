@@ -14,7 +14,7 @@ caais-exit() {
 }
 
 # Starting message
-echo 'CAAIS, version $ver (by RaptaG and me0wing-katt0)'
+echo 'CAAIS, version $ver (by RaptaG, terminalmaid and TruncatedDinosour)'
 
 # Root permission checker
 if [ "$EUID" -ne 0 ]; then
