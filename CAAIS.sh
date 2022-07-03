@@ -1,7 +1,7 @@
 #!/bin/bash
-# Made by RaptaG and me0wing-katt0, for your peace of mind :)
+# Made by RaptaG, terminalmaid and TruncatedDinosour for your peace of mind :)
 
-# Crash Checker
+# Crash checker
 set -e
 
 # Definitions
