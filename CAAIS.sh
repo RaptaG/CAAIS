@@ -23,7 +23,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Main script
-main() {
+caais() {
     # Installing keys
     echo 'Installing the Chaotic-AUR keys...'
     pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
@@ -63,6 +63,6 @@ main() {
 }
 
 # Running the script
-main "$@"
+caais "$@"
 echo 'Done! Now Chaotic-AUR should be installed and working in your system!'
 caais-exit
