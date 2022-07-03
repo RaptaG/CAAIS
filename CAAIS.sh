@@ -5,7 +5,7 @@
 set -e
 
 # Definitions
-ver=1.1
+ver=1.2
 fname=$(basename $0)
 
 caais-exit() {
