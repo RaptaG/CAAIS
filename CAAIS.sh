@@ -6,7 +6,7 @@ set -e
 
 # Definitions
 ver=1.1
-fname=$0
+fname=$(basename $0)
 
 caais-exit() {
     echo 'Exiting...'
