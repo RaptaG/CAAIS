@@ -5,7 +5,7 @@
 set -e
 
 # Definitions
-ver=1.2
+ver=1.3
 fname=$(basename $0)
 
 caais-exit() {
@@ -26,20 +26,21 @@ fi
 caais() {
     # Installing keys
     echo 'Installing the Chaotic-AUR keys...'
-    pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
-    pacman-key --lsign-key FBA220DFC880C036
+    pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com > /dev/null 2>&1
+    pacman-key --lsign-key FBA220DFC880C036 > /dev/null 2>&1
 
     # Downloading the keyring and the mirrorlist
     echo 'Downloading the keyring...'
-    pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+    pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
     echo 'Downloading the mirrorlist...'
-    pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+    pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
     # Checking if Chaotic-AUR is already appended in pacman.conf, if not skip
     echo 'Appending Chaotic-AUR to the mirrorlist...'
 
-    if grep 'chaotic-aur' /etc/pacman.conf; then
+    appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
+    if [ $appendInPacmanConf -eq 0 ]; then
         echo 'Chaotic-AUR is already append in pacman.conf, skipping...'
     else
         echo -e '\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf
@@ -52,7 +53,7 @@ caais() {
     read answer
 
     case "$answer" in
-    [yY]*)
+    [yY]* | "")
         pacman -Syu
         ;;
     *)
