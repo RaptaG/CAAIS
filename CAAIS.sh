@@ -5,7 +5,7 @@
 set -e
 
 # Definitions
-ver=1.3
+ver=1.4
 fname=$(basename $0)
 
 caais-exit() {
@@ -38,8 +38,8 @@ caais() {
 
     # Checking if Chaotic-AUR is already appended in pacman.conf, if not skip
     echo 'Appending Chaotic-AUR to the mirrorlist...'
-
     appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
+
     if [ $appendInPacmanConf -eq 0 ]; then
         echo 'Chaotic-AUR is already append in pacman.conf, skipping...'
     else
@@ -50,9 +50,9 @@ caais() {
     echo 'Refreshing the mirrorlists...'
 
     echo -n 'Doing this is needed for Chaotic-AUR to work, but will also cause a system upgrade. Do you wish to continue? [Y/n] '
-    read answer
+    read answer1
 
-    case "$answer" in
+    case "$answer1" in
     [yY]* | "")
         pacman -Syu
         ;;
@@ -63,7 +63,24 @@ caais() {
     esac
 }
 
+# Select if you want to delete the script
+delete-caais() {
+    echo -n 'Since Chaotic-AUR is installed, this program has no use. Would you like to delete it [Y/n] '
+    read answer2
+    
+    case "$answer2" in
+    [yY]* | "")
+        echo 'Deleting...'
+        rm $fname
+        caais-exit
+        ;;
+    *)
+        caais-exit
+        ;;
+    esac
+}
+
 # Running the script
 caais "$@"
 echo 'Done! Now Chaotic-AUR should be installed and working in your system!'
-caais-exit
+delete-caais "$@"
