@@ -2,7 +2,7 @@
 
 # Chaotic-AUR Automated Install Script (CAAIS)
 
-[![GitHub downloads](https://img.shields.io/github/downloads/RaptaG/CAAIS/total?style=round&logo=github)](https://github.com/RaptaG/CAAIS/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/RaptaG/CAAIS/total?color=lime&style=round&logo=github)](https://github.com/RaptaG/CAAIS/releases)
 
 </div>
 
