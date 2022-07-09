@@ -2,6 +2,8 @@
 
 # Chaotic-AUR Automated Install Script (CAAIS)
 
+[![GitHub downloads](https://img.shields.io/github/downloads/RaptaG/CAAIS/total?style=round&logo=github)](https://github.com/RaptaG/CAAIS/releases)
+
 </div>
 
 ## What's this?
@@ -10,7 +12,7 @@ The **Chaotic-AUR Automated Install Script** (or _CAAIS_ for short) is a program
 
 ## Installation/Usage
 
-### 1. Via the Releases Tab
+### 1. Via the Releases Tab (recommended)
 
 - Enter the [Releases Tab](https://github.com/RaptaG/CAAIS/releases) and download (recommended) the latest available version
 
