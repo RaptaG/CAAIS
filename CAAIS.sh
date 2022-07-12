@@ -50,9 +50,9 @@ caais() {
     echo 'Refreshing the mirrorlists...'
 
     echo -n 'Doing this is needed for Chaotic-AUR to work, but will also cause a system upgrade. Do you wish to continue? [Y/n] '
-    read answer1
+    read answer
 
-    case "$answer1" in
+    case "$answer" in
     [yY]* | "")
         pacman -Syu
         ;;
@@ -61,14 +61,15 @@ caais() {
         caais-exit
         ;;
     esac
+    unset answer
 }
 
 # Select if you want to delete the script
 delete-caais() {
     echo -n 'Since Chaotic-AUR is installed, this program has no use. Would you like to delete it [Y/n] '
-    read answer2
+    read answer
     
-    case "$answer2" in
+    case "$answer" in
     [yY]* | "")
         echo 'Deleting...'
         rm $fname
