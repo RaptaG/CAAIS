@@ -1,12 +1,10 @@
 #!/bin/bash
 # Made by RaptaG, terminalmaid and TruncatedDinosour for your peace of mind :)
-
-# Crash checker
 set -e
 
 # Definitions
-ver=1.4
-fname=$(basename $0)
+ver='1.5'
+fname="$(basename $0)"
 
 caais-exit() {
     echo 'Exiting...'
@@ -18,13 +16,13 @@ echo 'CAAIS, version $ver (by RaptaG, terminalmaid and TruncatedDinosour)'
 
 # Root permission checker
 if [ "$EUID" -ne 0 ]; then
-     echo 'Error: $fname requires root permissions. Please run: sudo ./$fname'
+     echo -e 'Error: Root permissions are required for $fname to work.\nPlease run: sudo ./$fname'
      caais-exit 1
 fi
 
 # Main script
 caais() {
-    # Installing keys
+    # Installing the Chaotic-AUR keys
     echo 'Installing the Chaotic-AUR keys...'
     pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com > /dev/null 2>&1
     pacman-key --lsign-key FBA220DFC880C036 > /dev/null 2>&1
@@ -46,37 +44,24 @@ caais() {
         echo -e '\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf
     fi
 
-    # Refreshing the mirrorlist
+    # Refreshing the mirrorlists so that Chaotic-AUR can be activated
     echo 'Refreshing the mirrorlists...'
-
-    echo -n 'Doing this is needed for Chaotic-AUR to work, but will also cause a system upgrade. Do you wish to continue? [Y/n] '
-    read answer
-
-    case "$answer" in
-    [yY]* | "")
-        pacman -Syu
-        ;;
-    *)
-        echo "You'll now have to refresh the mirrorlists manually, by running: sudo pacman -Syu"
-        caais-exit
-        ;;
-    esac
-    unset answer
+    pacman -Sy
 }
 
 # Select if you want to delete the script
 delete-caais() {
-    echo -n 'Since Chaotic-AUR is installed, this program has no use. Would you like to delete it [Y/n] '
+    echo -n 'Since Chaotic-AUR is installed, this file has no use. Would you like to delete it [Y/n] '
     read answer
     
     case "$answer" in
     [yY]* | "")
         echo 'Deleting...'
         rm $fname
-        caais-exit
+        caais-exit 0
         ;;
     *)
-        caais-exit
+        caais-exit 0
         ;;
     esac
 }
