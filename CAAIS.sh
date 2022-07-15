@@ -3,8 +3,8 @@
 set -e
 
 # Definitions
-ver='1.5'
-fname="$(basename $0)"
+ver=1.6
+fname=$(basename $0)
 
 caais-exit() {
     echo 'Exiting...'
@@ -12,11 +12,11 @@ caais-exit() {
 }
 
 # Starting message
-echo 'CAAIS, version $ver (by RaptaG, terminalmaid and TruncatedDinosour)'
+echo "CAAIS, version $ver (by RaptaG, terminalmaid and TruncatedDinosour)"
 
 # Root permission checker
 if [ "$EUID" -ne 0 ]; then
-     echo -e 'Error: Root permissions are required for $fname to work.\nPlease run: sudo ./$fname'
+     echo -e "Error: Root permissions are required for $fname to work.\nPlease run: sudo ./$fname"
      caais-exit 1
 fi
 
@@ -38,7 +38,7 @@ caais() {
     echo 'Appending Chaotic-AUR to the mirrorlist...'
     appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
 
-    if [ $appendInPacmanConf -eq 0 ]; then
+    if [ $appendInPacmanConf == "[chaotic-aur]" ]; then
         echo 'Chaotic-AUR is already append in pacman.conf, skipping...'
     else
         echo -e '\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' >> /etc/pacman.conf
