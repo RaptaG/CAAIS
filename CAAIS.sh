@@ -10,6 +10,10 @@ GHrelease="https://github.com/RaptaG/CAAIS/releases/tag/$ver"
 # Startup message
 echo "CAAIS, version $ver (by RaptaG, terminalmaid and TruncatedDinosour)"
 
+# Check if the OS is based on Arch Linux
+isArch="$(grep 'ID_LIKE=arch' /etc/os-release)"
+
+
 # Root permission checker
 if [ "$EUID" -ne 0 ]; then
      echo -e "Error: Root permissions are required for $fname to work.\nPlease run 'sudo ./$fname --help' for more information."
