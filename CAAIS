@@ -1,6 +1,5 @@
 #!/bin/bash
 # Made by RaptaG, terminalmaid and TruncatedDinosour
-set -e
 
 # Definitions
 ver="1.7"
@@ -132,7 +131,7 @@ delete-caais() {
 # Find the option selected and run the correct command
 case "$1" in
 -h | --help)
-	echo -e "Usage: $fname [OPTION]\n"
+     echo -e "Usage: $fname [OPTION]\n"
      echo -e "\n-h, --help       This help menu\n"
      echo -e "\n-v, --version    Display the version of CAAIS you currently use\n"
      echo -e "\n-d, --delete     Delete CAAIS (NOT Chaotic-AUR)\n"
