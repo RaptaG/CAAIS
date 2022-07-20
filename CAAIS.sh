@@ -33,7 +33,7 @@ caais-get() {
      # Check if it's already appended in pacman.conf, if not skip
      appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
 
-	if [ $appendInPacmanConf == "[chaotic-aur]" ]; then
+     if [ $appendInPacmanConf == "[chaotic-aur]" ]; then
           echo "Chaotic-AUR is already append in pacman.conf, skipping..."
      else
           echo "Appending Chaotic-AUR to the mirrorlist..."
