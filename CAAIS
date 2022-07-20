@@ -3,16 +3,23 @@
 set -e
 
 # Definitions
-ver="1.7-dev"
+ver="1.7"
 fname="$(basename $0)"
 GHrelease="https://github.com/RaptaG/CAAIS/releases/tag/$ver"
+isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
+isGaruda="$(grep 'ID=garuda' /etc/os-release)"
 
 # Startup message
 echo "CAAIS, version $ver (by RaptaG, terminalmaid and TruncatedDinosour)"
 
-# Check if the OS is based on Arch Linux
-isArch="$(grep 'ID_LIKE=arch' /etc/os-release)"
-
+# Check if the OS is based on Arch Linux or if it's Garuda Linux
+if [ "$isArchBased" == "" ]; then
+     echo -e "Error: Your system is not (based) on Arch Linux. Chaotic-AUR cannot be installed.\nExiting..."
+     exit 1
+elif [ "$isGaruda" == "ID=garuda" ]; then
+     echo -e "You are running Garuda Linux. Chaotic-AUR is preinstalled in your system and makes CAAIS useless for you.\nExiting..."
+     exit 1
+fi
 
 # Root permission checker
 if [ "$EUID" -ne 0 ]; then
@@ -22,6 +29,17 @@ fi
 
 # Download & install Chaotic-AUR
 caais-get() {
+     # Warning
+     echo -n "This will install Chaotic-AUR in your system. Are you sure you want to proceed [Y/n] "
+     read answer
+
+     case "$answer" in
+     [nN])
+          echo "Exiting..."
+          exit 0
+          ;;
+     esac
+
      # Download & install the Chaotic-AUR key
      echo "Installing the Chaotic-AUR key..."
      pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com > /dev/null 2>&1
@@ -37,7 +55,7 @@ caais-get() {
      # Check if it's already appended in pacman.conf, if not skip
      appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
 
-     if [ $appendInPacmanConf == "[chaotic-aur]" ]; then
+     if [ "$appendInPacmanConf" == "[chaotic-aur]" ]; then
           echo "Chaotic-AUR is already append in pacman.conf, skipping..."
      else
           echo "Appending Chaotic-AUR to the mirrorlist..."
@@ -60,7 +78,7 @@ caais-remove() {
      read answer
 
      case "$answer" in
-     [yY]*)
+     [yY])
           exit 0
 		;;
      esac
@@ -80,7 +98,8 @@ caais-remove() {
 
      # Remove Chaotic-AUR from pacman.conf
      echo "Removing Chaotic-AUR from pacman.conf..."
-     
+     sed -i '/chaotic-aur/d' /etc/pacman.conf
+     sed -i '/chaotic-mirrorlist/d' /etc/pacman.conf
 
      # Refresh the mirrorlists
      echo "Refreshing the mirrorlists..."
@@ -97,7 +116,7 @@ delete-caais() {
      read answer
 
      case "$answer" in
-     [yY]* | "")
+     [yY] | "")
           echo "Deleting..."
           rm $fname
           echo -e "Remember, you can always reinstall CAAIS in case you want to remove Chaotic-AUR:\n$GHrelease"
