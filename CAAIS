@@ -2,7 +2,7 @@
 # Made by RaptaG, terminalmaid and TruncatedDinosour
 
 # Definitions
-ver="1.7"
+ver="1.7.1"
 fname="$(basename $0)"
 GHrelease="https://github.com/RaptaG/CAAIS/releases/tag/$ver"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
