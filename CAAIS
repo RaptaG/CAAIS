@@ -8,9 +8,6 @@ GHrelease="https://github.com/RaptaG/CAAIS/releases/tag/$ver"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
 isGaruda="$(grep 'ID=garuda' /etc/os-release)"
 
-# Startup message
-echo "CAAIS, version $ver (by RaptaG, terminalmaid and TruncatedDinosour)"
-
 # Check if the OS is based on Arch Linux or if it's Garuda Linux
 if [ "$isArchBased" == "" ]; then
      echo -e "Error: Your system is not (based) on Arch Linux. Chaotic-AUR cannot be installed.\nExiting..."
@@ -29,7 +26,7 @@ fi
 # Download & install Chaotic-AUR
 caais-get() {
      # Warning
-     echo -n "This will install Chaotic-AUR in your system. Are you sure you want to proceed [Y/n] "
+     echo -n "This will install Chaotic-AUR in your system. Do you wish to proceed [Y/n] " >&2
      read answer
 
      case "$answer" in
@@ -73,7 +70,7 @@ caais-get() {
 # Uninstall Chaotic-AUR
 caais-remove() {
      # Warning message
-     echo -n "WARNING: This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to continue? [y/N] "
+     echo -n "Warning: This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] " >&2
      read answer
 
      case "$answer" in
@@ -132,15 +129,23 @@ delete-caais() {
 case "$1" in
 -h | --help)
      echo -e "Usage: $fname [OPTION]\n"
-     echo -e "\n-h, --help       This help menu\n"
-     echo -e "\n-v, --version    Display the version of CAAIS you currently use\n"
-     echo -e "\n-d, --delete     Delete CAAIS (NOT Chaotic-AUR)\n"
-     echo -e "\n-i, --install    Download and install Chaotic-AUR\n"
-     echo -e "\n-r, --remove     Remove Chaotic-AUR from your system\n"
+     echo -e "\n-h, --help                   This help menu"
+     echo -e "\n-v, --version                Display the version of CAAIS you currently use"
+     echo -e "\n-c, --contributors           Display the current contributors"
+     echo -e "\n-d, --delete                 Delete CAAIS (NOT Chaotic-AUR)"
+     echo -e "\n-i, --install                Download and install Chaotic-AUR"
+     echo -e "\n-r, --remove                 Remove Chaotic-AUR from your system"
      echo -e "\nThe main repo with the source code, the license and all the info related is availiable here:\nhttps://github.com/RaptaG/CAAIS"
      ;;
 -v | --version)
-     echo -e "CAAIS, version $ver\n$GHrelease"
+     echo "Version of CAAIS currently used: $ver"
+     echo "GitHub release: $GHrelease"
+     ;;
+-c | --contributors)
+     echo "Current contributors:"
+     echo "1) RaptaG (main developer)"
+     echo "2) terminalmaid (Pull Request #1)"
+     echo "3) TruncatedDinosour (Pull Request #2)"
      ;;
 -d | --delete)
      delete-caais "$@"
@@ -151,6 +156,9 @@ case "$1" in
 -r | --remove)
      caais-remove "$@"
      ;;
+"")
+    echo "Invalid selection. Please run 'sudo ./$fname' to see the list of all the options availiable."
+    exit 1
 *)
      echo "Invalid option '$1'. Please run 'sudo ./$fname --help' for more information."
      exit 1
