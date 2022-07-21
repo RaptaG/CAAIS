@@ -52,4 +52,4 @@ You can use [the Issues section](https://github.com/RaptaG/CAAIS/issues) to repo
   
 ## License
 
-This project is under the [`Apache-2.0`](LICENSE) license.
+This project is licensed under the [`Apache-2.0`](LICENSE) license.
