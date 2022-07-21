@@ -2,7 +2,7 @@
 # Made by RaptaG, terminalmaid and TruncatedDinosour
 
 # Definitions
-ver="1.7.1"
+ver="1.8"
 fname="$(basename $0)"
 GHrelease="https://github.com/RaptaG/CAAIS/releases/tag/$ver"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
@@ -25,8 +25,12 @@ fi
 
 # Download & install Chaotic-AUR
 caais-get() {
+     # Startup message
+     echo "CAAIS, version $ver"
+     echo "Current operation: Install Chaotic-AUR"
+
      # Warning
-     echo -n "This will install Chaotic-AUR in your system. Do you wish to proceed [Y/n] " >&2
+     echo -n " Do you wish to proceed [Y/n] " >&2
      read answer
 
      case "$answer" in
@@ -69,8 +73,12 @@ caais-get() {
 
 # Uninstall Chaotic-AUR
 caais-remove() {
+     # Startup message
+     echo "CAAIS, version $ver"
+     echo "Current operation: Uninstall Chaotic-AUR"
+
      # Warning message
-     echo -n "Warning: This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] " >&2
+     echo -n "This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] " >&2
      read answer
 
      case "$answer" in
@@ -108,6 +116,10 @@ caais-remove() {
 
 # Select if you want to delete CAAIS
 delete-caais() {
+     # Startup message
+     echo "CAAIS, version $ver"
+     echo "Current operation: Delete CAAIS"
+
      echo -n "Warning: This will remove CAAIS completely from your system. Are you sure you want to proceed [Y/n] "
      read answer
 
@@ -115,7 +127,6 @@ delete-caais() {
      [yY] | "")
           echo "Deleting..."
           rm $fname
-          echo -e "Remember, you can always reinstall CAAIS in case you want to remove Chaotic-AUR:\n$GHrelease"
           exit 0
           ;;
      *)
@@ -130,8 +141,8 @@ case "$1" in
 -h | --help)
      echo -e "Usage: $fname [OPTION]\n"
      echo -e "\n-h, --help                   This help menu"
-     echo -e "\n-v, --version                Display the version of CAAIS you currently use"
-     echo -e "\n-c, --contributors           Display the current contributors"
+     echo -e "\n-v, --version                Display the version of CAAIS currently used"
+     echo -e "\n-c, --contributors           Display the current contributors of CAAIS"
      echo -e "\n-d, --delete                 Delete CAAIS (NOT Chaotic-AUR)"
      echo -e "\n-i, --install                Download and install Chaotic-AUR"
      echo -e "\n-r, --remove                 Remove Chaotic-AUR from your system"
@@ -157,8 +168,8 @@ case "$1" in
      caais-remove "$@"
      ;;
 "")
-    echo "Invalid selection. Please run 'sudo ./$fname' to see the list of all the options availiable."
-    exit 1
+     echo "Invalid selection. Please run 'sudo ./$fname' to see the list of all the options availiable."
+     exit 1
 *)
      echo "Invalid option '$1'. Please run 'sudo ./$fname --help' for more information."
      exit 1
