@@ -33,12 +33,12 @@ caais-get() {
      echo -n " Do you wish to proceed [Y/n] " >&2
      read answer
 
-     case "$answer" in
-     [nN])
-          echo "Exiting..."
+     if [ "$answer" == "n" ]; then
           exit 0
-          ;;
-     esac
+     elif [ "$answer" == "N" ]; then
+          exit 0
+     fi
+     unset answer
 
      # Download & install the Chaotic-AUR key
      echo "Installing the Chaotic-AUR key..."
@@ -81,11 +81,13 @@ caais-remove() {
      echo -n "This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] " >&2
      read answer
 
-     case "$answer" in
-     [yY])
+     if [ "$answer" == "n" ]; then
           exit 0
-		;;
-     esac
+     elif [ "$answer" == "N" ]; then
+          exit 0
+     elif [ "$answer" == "" ]; then
+          exit 0
+     fi
      unset answer
 
      # Delete the Chaotic-AUR key
@@ -139,7 +141,7 @@ delete-caais() {
 # Find the option selected and run the correct command
 case "$1" in
 -h | --help)
-     echo -e "Usage: $fname [OPTION]\n"
+     echo -e "Usage: $fname [OPTION]"
      echo -e "\n-h, --help                   This help menu"
      echo -e "\n-v, --version                Display the version of CAAIS currently used"
      echo -e "\n-c, --contributors           Display the current contributors of CAAIS"
@@ -170,6 +172,7 @@ case "$1" in
 "")
      echo "Invalid selection. Please run 'sudo ./$fname' to see the list of all the options availiable."
      exit 1
+     ;;
 *)
      echo "Invalid option '$1'. Please run 'sudo ./$fname --help' for more information."
      exit 1
