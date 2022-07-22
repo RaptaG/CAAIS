@@ -30,7 +30,7 @@ caais-get() {
      echo "Current operation: Install Chaotic-AUR"
 
      # Warning
-     echo -n " Do you wish to proceed [Y/n] " >&2
+     echo -n "Do you wish to proceed [Y/n] " >&2
      read answer
 
      if [ "$answer" == "n" ]; then
