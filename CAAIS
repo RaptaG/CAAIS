@@ -2,18 +2,19 @@
 # Made by RaptaG, terminalmaid and TruncatedDinosour
 
 # Definitions
-ver="1.8"
+ver="1.9-dev"
 fname="$(basename $0)"
 GHrelease="https://github.com/RaptaG/CAAIS/releases/tag/$ver"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
-isGaruda="$(grep 'ID=garuda' /etc/os-release)"
 
-# Check if the OS is based on Arch Linux or if it's Garuda Linux
+startup() {
+     echo "CAAIS, version $ver"
+     echo "Current operation: $action Chaotic-AUR"
+}
+
+# Check if the OS is based on Arch Linux (Artix Linux currently broken)
 if [ "$isArchBased" == "" ]; then
-     echo -e "Error: Your system is not (based) on Arch Linux. Chaotic-AUR cannot be installed.\nExiting..."
-     exit 1
-elif [ "$isGaruda" == "ID=garuda" ]; then
-     echo -e "You are running Garuda Linux. Chaotic-AUR is preinstalled in your system and makes CAAIS useless for you.\nExiting..."
+     echo "Error: Your system is not (based on) Arch Linux. Chaotic-AUR cannot be installed."
      exit 1
 fi
 
@@ -24,13 +25,9 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Download & install Chaotic-AUR
-caais-get() {
-     # Startup message
-     echo "CAAIS, version $ver"
-     echo "Current operation: Install Chaotic-AUR"
-
-     # Warning
-     echo -n "Do you wish to proceed [Y/n] " >&2
+install() {
+     startup
+     echo -n "Do you wish to proceed [Y/n] "
      read answer
 
      if [ "$answer" == "n" ]; then
@@ -45,14 +42,14 @@ caais-get() {
      pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com > /dev/null 2>&1
      pacman-key --lsign-key FBA220DFC880C036 > /dev/null 2>&1
 
-     # Download its keyring and mirrorlist
-     echo "Downloading its keyring..."
+     # Download Chaotic-AUR's keyring and mirrorlist
+     echo "Downloading the keyring..."
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
-     echo "Downloading its mirrorlist..."
+     echo "Downloading the mirrorlist..."
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
-     # Check if it's already appended in pacman.conf, if not skip
+     # Append in pacman.conf
      appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
 
      if [ "$appendInPacmanConf" == "[chaotic-aur]" ]; then
@@ -62,23 +59,19 @@ caais-get() {
           echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
      fi
 
-     # Refresh the mirrorlists so that it can be activated
+     # Refresh the mirrorlists
      echo "Refreshing the mirrorlists..."
-     pacman -Sy
+     pacman -Sy > /dev/null 2>&1
 
-     # Finish message
+     # Finish
      echo "Done! Now Chaotic-AUR should be installed and working in your system!"
      exit 0
 }
 
 # Uninstall Chaotic-AUR
-caais-remove() {
-     # Startup message
-     echo "CAAIS, version $ver"
-     echo "Current operation: Uninstall Chaotic-AUR"
-
-     # Warning message
-     echo -n "This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] " >&2
+remove() {     
+     startup
+     echo -n "This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] "
      read answer
 
      if [ "$answer" == "n" ]; then
@@ -94,11 +87,10 @@ caais-remove() {
      echo "Deleting the Chaotic-AUR key..."
      pacman-key --delete 3FFA0B5E092ED4095E26F69B8ADB4AEC585061CF > /dev/null 2>&1
 
-     # Uninstall its keyring
-     echo "Uninstalling its keyring..."
+     # Uninstall the keyring and the mirrorlist
+     echo "Uninstalling the keyring..."
      pacman -Rns chaotic-keyring --no-confirm > /dev/null 2>&1
 
-     # Uninstall its mirrorlist
      echo "Uninstalling the mirrorlist..."
      pacman -Rns chaotic-mirrorlist --no-confirm > /dev/null 2>&1
 
@@ -109,33 +101,11 @@ caais-remove() {
 
      # Refresh the mirrorlists
      echo "Refreshing the mirrorlists..."
-     pacman -Sy
+     pacman -Sy > /dev/null 2>&1
 
-     # Finish message
+     # Finish
      echo "Done! Now Chaotic-AUR should be removed from your system."
      exit 0
-}
-
-# Select if you want to delete CAAIS
-delete-caais() {
-     # Startup message
-     echo "CAAIS, version $ver"
-     echo "Current operation: Delete CAAIS"
-
-     echo -n "Warning: This will remove CAAIS completely from your system. Are you sure you want to proceed [Y/n] "
-     read answer
-
-     case "$answer" in
-     [yY] | "")
-          echo "Deleting..."
-          rm $fname
-          exit 0
-          ;;
-     *)
-          exit 0
-          ;;
-     esac
-     unset answer
 }
 
 # Find the option selected and run the correct command
@@ -143,38 +113,29 @@ case "$1" in
 -h | --help)
      echo -e "Usage: $fname [OPTION]"
      echo -e "\n-h, --help                   This help menu"
-     echo -e "\n-v, --version                Display the version of CAAIS currently used"
-     echo -e "\n-c, --contributors           Display the current contributors of CAAIS"
-     echo -e "\n-d, --delete                 Delete CAAIS (NOT Chaotic-AUR)"
+     echo -e "\n-a, --about                  Display informaton about CAAIS (eg. version)"
      echo -e "\n-i, --install                Download and install Chaotic-AUR"
      echo -e "\n-r, --remove                 Remove Chaotic-AUR from your system"
      echo -e "\nThe main repo with the source code, the license and all the info related is availiable here:\nhttps://github.com/RaptaG/CAAIS"
      ;;
--v | --version)
+-a | --about)
      echo "Version of CAAIS currently used: $ver"
-     echo "GitHub release: $GHrelease"
-     ;;
--c | --contributors)
+     echo -e "GitHub release: $GHrelease\n"
      echo "Current contributors:"
      echo "1) RaptaG (main developer)"
      echo "2) terminalmaid (Pull Request #1)"
      echo "3) TruncatedDinosour (Pull Request #2)"
      ;;
--d | --delete)
-     delete-caais "$@"
-     ;;
 -i | --install)
-     caais-get "$@"
+     action="Install"
+     install
      ;;
 -r | --remove)
-     caais-remove "$@"
-     ;;
-"")
-     echo "Invalid selection. Please run 'sudo ./$fname' to see the list of all the options availiable."
-     exit 1
+     action="Remove"
+     remove
      ;;
 *)
-     echo "Invalid option '$1'. Please run 'sudo ./$fname --help' for more information."
+     echo "Invalid selection. Please run 'sudo ./$fname' to see the list of all the options availiable."
      exit 1
      ;;
 esac
