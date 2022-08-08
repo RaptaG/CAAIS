@@ -2,20 +2,24 @@
 # Made by RaptaG, terminalmaid and TruncatedDinosour
 
 # Definitions
-ver="1.9-dev"
+ver="1.9"
 fname="$(basename $0)"
-GHrelease="https://github.com/RaptaG/CAAIS/releases/tag/$ver"
+appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
+isArtix="$(grep 'ID=artix' /etc/os-release)"
+isInstalled="$(pacman -Q chaotic-keyring chaotic-mirrorlist | awk '{print $1}')"
 
 startup() {
      echo "CAAIS, version $ver"
      echo "Current operation: $action Chaotic-AUR"
 }
 
-# Check if the OS is based on Arch Linux (Artix Linux currently broken)
+# Check if the OS is based on Arch Linux/ is Artix Linux
 if [ "$isArchBased" == "" ]; then
      echo "Error: Your system is not (based on) Arch Linux. Chaotic-AUR cannot be installed."
      exit 1
+elif [ "isArtix" == "ID=artix" ]; then
+     sleep 0s
 fi
 
 # Root permission checker
@@ -27,6 +31,14 @@ fi
 # Download & install Chaotic-AUR
 install() {
      startup
+
+     # Checks
+     if [ "$isInstalled" == "chaotic-keyring
+     chaotic-mirrorlist" ]; then
+          echo "Error: Chaotic-AUR is alread installed and it's pointless to be reinstalled."
+          exit 1
+     fi
+
      echo -n "Do you wish to proceed [Y/n] "
      read answer
 
@@ -37,12 +49,12 @@ install() {
      fi
      unset answer
 
-     # Download & install the Chaotic-AUR key
-     echo "Installing the Chaotic-AUR key..."
+     # Key
+     echo "Installing the key..."
      pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com > /dev/null 2>&1
      pacman-key --lsign-key FBA220DFC880C036 > /dev/null 2>&1
 
-     # Download Chaotic-AUR's keyring and mirrorlist
+     # Keyring & mirrorlist
      echo "Downloading the keyring..."
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
@@ -50,16 +62,14 @@ install() {
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
      # Append in pacman.conf
-     appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
-
      if [ "$appendInPacmanConf" == "[chaotic-aur]" ]; then
           echo "Chaotic-AUR is already append in pacman.conf, skipping..."
      else
-          echo "Appending Chaotic-AUR to the mirrorlist..."
+          echo "Appending Chaotic-AUR in pacman.conf..."
           echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
      fi
 
-     # Refresh the mirrorlists
+     # Refresh mirrorlists
      echo "Refreshing the mirrorlists..."
      pacman -Sy > /dev/null 2>&1
 
@@ -71,6 +81,14 @@ install() {
 # Uninstall Chaotic-AUR
 remove() {     
      startup
+
+     # Checks
+     if [ "$isInstalled" == "error: package 'chaotic-keyring' was not found
+     error: package 'chaotic-mirrorlist' was not found" ]; then
+          echo "Error: Chaotic-AUR is not installed and cannot be removed."
+          exit 1
+     fi
+
      echo -n "This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] "
      read answer
 
@@ -83,23 +101,23 @@ remove() {
      fi
      unset answer
 
-     # Delete the Chaotic-AUR key
-     echo "Deleting the Chaotic-AUR key..."
+     # Key
+     echo "Deleting the key..."
      pacman-key --delete 3FFA0B5E092ED4095E26F69B8ADB4AEC585061CF > /dev/null 2>&1
 
-     # Uninstall the keyring and the mirrorlist
+     # Keyring & mirrorlist
      echo "Uninstalling the keyring..."
      pacman -Rns chaotic-keyring --no-confirm > /dev/null 2>&1
 
      echo "Uninstalling the mirrorlist..."
      pacman -Rns chaotic-mirrorlist --no-confirm > /dev/null 2>&1
 
-     # Remove Chaotic-AUR from pacman.conf
+     # Remove from pacman.conf
      echo "Removing Chaotic-AUR from pacman.conf..."
      sed -i '/chaotic-aur/d' /etc/pacman.conf
      sed -i '/chaotic-mirrorlist/d' /etc/pacman.conf
 
-     # Refresh the mirrorlists
+     # Refresh mirrorlists
      echo "Refreshing the mirrorlists..."
      pacman -Sy > /dev/null 2>&1
 
@@ -110,7 +128,7 @@ remove() {
 
 # Find the option selected and run the correct command
 case "$1" in
--h | --help)
+-h | --help | "")
      echo -e "Usage: $fname [OPTION]"
      echo -e "\n-h, --help                   This help menu"
      echo -e "\n-a, --about                  Display informaton about CAAIS (eg. version)"
@@ -120,7 +138,7 @@ case "$1" in
      ;;
 -a | --about)
      echo "Version of CAAIS currently used: $ver"
-     echo -e "GitHub release: $GHrelease\n"
+     echo -e "GitHub release: https://github.com/RaptaG/CAAIS/releases/tag/$ver\n"
      echo "Current contributors:"
      echo "1) RaptaG (main developer)"
      echo "2) terminalmaid (Pull Request #1)"
@@ -135,7 +153,7 @@ case "$1" in
      remove
      ;;
 *)
-     echo "Invalid selection. Please run 'sudo ./$fname' to see the list of all the options availiable."
+     echo "Invalid option '$1'. Please run 'sudo ./$fname' to see the list of all the options availiable."
      exit 1
      ;;
 esac

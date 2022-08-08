@@ -7,23 +7,23 @@
 
 The **Chaotic-AUR Automated Install Script** (or _CAAIS_ for short) is a program (written in [Bash](https://www.gnu.org/software/bash)) which installs Chaotic-AUR **automatically** inside your system! It is based on the commands provided by [the Chaotic-AUR website](https://aur.chaotic.cx) and does pretty much everything that is shown there, with some extra options!
 
-Chaotic-AUR is, like the AUR (Arch User Repository), availiable only on Arch-based Linux distributions. If you try to install it anywhere else, CAAIS will tell that you that trying to install Chaotic-AUR there is impossible. Also, since Chaotic-AUR is preinstalled in Garuda Linux, CAAIS will also tell you to that it's useless there.
+Chaotic-AUR is, like the AUR (Arch User Repository), availiable only on Arch-based Linux distributions. So, if you try to install it anywhere else, CAAIS will tell that you that it is not possible.
 
 </div>
 
-## Installation/Usage
+## Installation
 
 ### 1. Via the Releases Tab (recommended, stable)
 
-- Enter the [Releases Tab](https://github.com/RaptaG/CAAIS/releases) and download the latest version available
-
-- Enter the folder you downloaded CAAIS, press Right Click -> <kbd>Open in Terminal</kbd>. Then, copy the following command, paste it inside the terminal and hit <kbd>Enter</kbd>
+- Enter the [Releases Tab](https://github.com/RaptaG/CAAIS/releases) and download the latest version available and run the following command in the folder you installed CAAIS:
 
 ```
-chmod +x CAAIS.sh && sudo ./CAAIS --install
+chmod +x CAAIS.sh
 ```
 
-### 2. By cloning the source code (unstable)
+This will make it executable (working).
+
+### 2. By cloning the source code (possibly unstable)
 
 - Open a terminal and run the command below. This will download the script and make it executable:
 
@@ -31,16 +31,19 @@ chmod +x CAAIS.sh && sudo ./CAAIS --install
   curl -Os https://raw.githubusercontent.com/RaptaG/CAAIS/main/CAAIS && chmod +x CAAIS
 ```
 
-- In the same terminal, run the following command, which will start the script:
+## Usage
+
+Open up aterminal inside the folder where CAAIS is installed and run one of the following, according to what you want to do:
 
 ```
-  sudo ./CAAIS --install
+sudo ./CAAIS -h or --help:            Display the help menu
+sudo ./CAAIS -a or --about:           Display info related to CAAIS
+sudo ./CAAIS -i or --install:         Download and install Chaotic-AUR
+sudo ./CAAIS -r or --remove:          Uninstall Chaotic-AUR
 ```
-
-That's it! Now Chaotic-AUR should be installed in your system.
 
 ## Credits
-  
+
 - [terminalmaid](https://github.com/terminalmaid), for some imporant fixes and additions, on [#1](https://github.com/RaptaG/CAAIS/pull/1)
 - [TruncatedDinosour](https://github.com/TruncatedDinosour), for improving the original code, on [#2](https://github.com/RaptaG/CAAIS/pull/2)
 - [Linux.Chat](https://linux.chat/) [Discord server](https://discord.com/invite/fA7UuAAhzt), and its member who helped me with some parts of the code <br />(special thanks to [Theros](https://github.com/therosin))
@@ -48,8 +51,12 @@ That's it! Now Chaotic-AUR should be installed in your system.
 
 ## Feedback/Support
 
-You can use [the Issues section](https://github.com/RaptaG/CAAIS/issues) to report bugs, make suggestions or even ask a question.
-  
+You can use the [Issues section](https://github.com/RaptaG/CAAIS/issues) to report bugs, make suggestions or even ask a question.
+
+## Contact with me/Discuss about CAAIS
+
+[GitHub Discussions](https://github.com/RaptaG/CAAIS/discussions) were recently activated. Feel free to start a discussion there!
+
 ## License
 
 This project is licensed under the [`Apache-2.0`](LICENSE) license.
