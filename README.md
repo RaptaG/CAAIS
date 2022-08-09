@@ -33,7 +33,7 @@ This will make it executable (working).
 
 ## Usage
 
-Open up aterminal inside the folder where CAAIS is installed and run one of the following, according to what you want to do:
+Open up a terminal inside the folder where CAAIS is installed and run one of the following, according to what you want to do:
 
 ```
 sudo ./CAAIS -h or --help:            Display the help menu
@@ -46,7 +46,7 @@ sudo ./CAAIS -r or --remove:          Uninstall Chaotic-AUR
 
 - [terminalmaid](https://github.com/terminalmaid), for some imporant fixes and additions, on [#1](https://github.com/RaptaG/CAAIS/pull/1)
 - [TruncatedDinosour](https://github.com/TruncatedDinosour), for improving the original code, on [#2](https://github.com/RaptaG/CAAIS/pull/2)
-- [Linux.Chat](https://linux.chat/) [Discord server](https://discord.com/invite/fA7UuAAhzt), and its member who helped me with some parts of the code <br />(special thanks to [Theros](https://github.com/therosin))
+- [Linux.Chat](https://linux.chat/) [Discord server](https://discord.com/invite/fA7UuAAhzt), and its members who helped me with some parts of the code <br />(special thanks to [Theros](https://github.com/therosin))
 - [RaptaG](https://github.com/RaptaG) (myself), for the idea and for making the script itself
 
 ## Feedback/Support
