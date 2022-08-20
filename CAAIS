@@ -2,52 +2,46 @@
 # Made by RaptaG, terminalmaid and TruncatedDinosour
 
 # Definitions
-ver="1.9"
+ver="2.0-dev"
 fname="$(basename $0)"
-appendInPacmanConf=$(grep 'chaotic-aur' /etc/pacman.conf)
+appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
 isArtix="$(grep 'ID=artix' /etc/os-release)"
-isInstalled="$(pacman -Q chaotic-keyring chaotic-mirrorlist | awk '{print $1}')"
 
 startup() {
      echo "CAAIS, version $ver"
      echo "Current operation: $action Chaotic-AUR"
 }
 
-# Check if the OS is based on Arch Linux/ is Artix Linux
-if [ "$isArchBased" == "" ]; then
+# Check if the OS is based on Arch Linux / is Artix Linux
+if [ "${isArchBased}" == "" ]; then
      echo "Error: Your system is not (based on) Arch Linux. Chaotic-AUR cannot be installed."
      exit 1
-elif [ "isArtix" == "ID=artix" ]; then
+elif [ "${isArtix}" == "ID=artix" ]; then
      sleep 0s
 fi
 
 # Root permission checker
-if [ "$EUID" -ne 0 ]; then
-     echo -e "Error: Root permissions are required for $fname to work.\nPlease run 'sudo ./$fname --help' for more information."
+if [ "${EUID}" -ne 0 ]; then
+     echo -e "Error: Root permissions are required for ${fname} to work.\nPlease run 'sudo ./${fname} --help' for more information."
      exit 1
 fi
 
 # Download & install Chaotic-AUR
 install() {
      startup
-
-     # Checks
-     if [ "$isInstalled" == "chaotic-keyring
-     chaotic-mirrorlist" ]; then
-          echo "Error: Chaotic-AUR is alread installed and it's pointless to be reinstalled."
-          exit 1
-     fi
-
      echo -n "Do you wish to proceed [Y/n] "
      read answer
-
-     if [ "$answer" == "n" ]; then
+     
+     case "${answer}" in
+     [nN])
           exit 0
-     elif [ "$answer" == "N" ]; then
-          exit 0
-     fi
-     unset answer
+          unset answer
+          ;;
+     *)
+          unset answer
+          ;;
+     esac
 
      # Key
      echo "Installing the key..."
@@ -62,7 +56,7 @@ install() {
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
      # Append in pacman.conf
-     if [ "$appendInPacmanConf" == "[chaotic-aur]" ]; then
+     if [ "${appendInPacmanConf}" == "[chaotic-aur]" ]; then
           echo "Chaotic-AUR is already append in pacman.conf, skipping..."
      else
           echo "Appending Chaotic-AUR in pacman.conf..."
@@ -81,25 +75,18 @@ install() {
 # Uninstall Chaotic-AUR
 remove() {     
      startup
-
-     # Checks
-     if [ "$isInstalled" == "error: package 'chaotic-keyring' was not found
-     error: package 'chaotic-mirrorlist' was not found" ]; then
-          echo "Error: Chaotic-AUR is not installed and cannot be removed."
-          exit 1
-     fi
-
      echo -n "This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] "
      read answer
-
-     if [ "$answer" == "n" ]; then
+     
+     case "${answer}" in
+     [yY])
           exit 0
-     elif [ "$answer" == "N" ]; then
-          exit 0
-     elif [ "$answer" == "" ]; then
-          exit 0
-     fi
-     unset answer
+          unset answer
+          ;;
+     *)
+          unset answer
+          ;;
+     esac
 
      # Key
      echo "Deleting the key..."
@@ -129,20 +116,29 @@ remove() {
 # Find the option selected and run the correct command
 case "$1" in
 -h | --help | "")
-     echo -e "Usage: $fname [OPTION]"
-     echo -e "\n-h, --help                   This help menu"
-     echo -e "\n-a, --about                  Display informaton about CAAIS (eg. version)"
-     echo -e "\n-i, --install                Download and install Chaotic-AUR"
-     echo -e "\n-r, --remove                 Remove Chaotic-AUR from your system"
-     echo -e "\nThe main repo with the source code, the license and all the info related is availiable here:\nhttps://github.com/RaptaG/CAAIS"
+     echo "Usage: ${fname} [OPTION]"
+     echo
+     echo "-h, --help                        This help menu"
+     echo
+     echo "-a, --about                       Display informaton about CAAIS (eg. version)"
+     echo
+     echo "-i, --install                     Download and install Chaotic-AUR"
+     echo
+     echo "-r, --remove                      Remove Chaotic-AUR from your system"
+     echo
+     echo "The main repo with the source code, the license and all the info related is availiable here:"
+     echo "https://github.com/RaptaG/CAAIS"
+     exit 0
      ;;
 -a | --about)
-     echo "Version of CAAIS currently used: $ver"
-     echo -e "GitHub release: https://github.com/RaptaG/CAAIS/releases/tag/$ver\n"
+     echo "Version of CAAIS currently used: ${ver}"
+     echo "GitHub release: https://github.com/RaptaG/CAAIS/releases/tag/${ver}"
+     echo
      echo "Current contributors:"
-     echo "1) RaptaG (main developer)"
+     echo "1) RaptaG (Main developer)"
      echo "2) terminalmaid (Pull Request #1)"
      echo "3) TruncatedDinosour (Pull Request #2)"
+     exit 0
      ;;
 -i | --install)
      action="Install"
