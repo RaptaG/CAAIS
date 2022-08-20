@@ -35,8 +35,8 @@ install() {
      
      case "${answer}" in
      [nN])
-          exit 0
           unset answer
+          exit 0
           ;;
      *)
           unset answer
@@ -80,8 +80,8 @@ remove() {
      
      case "${answer}" in
      [yY])
-          exit 0
           unset answer
+          exit 0
           ;;
      *)
           unset answer
