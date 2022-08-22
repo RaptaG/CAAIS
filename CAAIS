@@ -2,15 +2,16 @@
 # Made by RaptaG, terminalmaid and TruncatedDinosour
 
 # Definitions
-ver="2.0-dev"
+ver="2.0-dev.2"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
 isArtix="$(grep 'ID=artix' /etc/os-release)"
+AURreinstall="$(pacman -Qm | awk '{print $1}')"
 
 startup() {
-     echo "CAAIS, version $ver"
-     echo "Current operation: $action Chaotic-AUR"
+     echo "CAAIS, version ${ver}"
+     echo "Current operation: ${action} Chaotic-AUR"
 }
 
 # Check if the OS is based on Arch Linux / is Artix Linux
@@ -35,7 +36,6 @@ install() {
      
      case "${answer}" in
      [nN])
-          unset answer
           exit 0
           ;;
      *)
@@ -75,16 +75,15 @@ install() {
 # Uninstall Chaotic-AUR
 remove() {     
      startup
-     echo -n "This will break ALL the packages you may have installed with Chaotic-AUR. Do you wish to proceed? [y/N] "
+     echo -n "Do you wish to proceed? [y/N] "
      read answer
      
      case "${answer}" in
      [yY])
           unset answer
-          exit 0
           ;;
      *)
-          unset answer
+          exit 0
           ;;
      esac
 
@@ -94,10 +93,10 @@ remove() {
 
      # Keyring & mirrorlist
      echo "Uninstalling the keyring..."
-     pacman -Rns chaotic-keyring --no-confirm > /dev/null 2>&1
+     pacman -Rns chaotic-keyring --noconfirm > /dev/null 2>&1
 
      echo "Uninstalling the mirrorlist..."
-     pacman -Rns chaotic-mirrorlist --no-confirm > /dev/null 2>&1
+     pacman -Rns chaotic-mirrorlist --noconfirm > /dev/null 2>&1
 
      # Remove from pacman.conf
      echo "Removing Chaotic-AUR from pacman.conf..."
@@ -108,8 +107,25 @@ remove() {
      echo "Refreshing the mirrorlists..."
      pacman -Sy > /dev/null 2>&1
 
-     # Finish
-     echo "Done! Now Chaotic-AUR should be removed from your system."
+     # AUR convertion
+     echo "Chaotic-AUR has been removed and all the packages you had installed from it are not working anymore."
+     echo -n "Do you wish to reinstall them from AUR? [Y/n] "
+     read answer
+
+     case "${answer}" in
+     [nN])
+          exit 0
+          ;;
+     *)
+          unset answer
+          ;;
+     esac
+
+     echo "Reinstalling..."
+     pamac build ${AURreinstall} --no-confirm > /dev/null 2>&1
+
+     # Finish 
+     echo "Done! Now, all your Chaotic-AUR packages have now been reinstalled and working again, with Chaotic-AUR removed from your system!"
      exit 0
 }
 
