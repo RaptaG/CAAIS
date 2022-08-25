@@ -56,7 +56,7 @@ Feel free to make a PR to fix or improve my code, I'll review and consider to me
 
 ## Support the project
 
-If you like this project, you can give it a star (click the <kbd>Star :star:</kbd> button on the top right of your screen).<br />This will help CAAIS grow more popular _and_ will make me happy :)
+If you like this project, you can give it a star (click the `Star ⭐` button on the top right of your screen).<br />This will help CAAIS grow more popular _and_ will make me happy :)
 
 ## Credits
 
