@@ -5,6 +5,7 @@
 ver="2.0-dev.2"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
+isVanillaArch="$(grep 'ID=arch' /etc/os-release)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
 isArtix="$(grep 'ID=artix' /etc/os-release)"
 AURreinstall="$(pacman -Qm | awk '{print $1}')"
@@ -14,11 +15,13 @@ startup() {
      echo "Current operation: ${action} Chaotic-AUR"
 }
 
-# Check if the OS is based on Arch Linux / is Artix Linux
+# Check if the OS is (based on) Arch Linux
 if [ "${isArchBased}" == "" ]; then
      echo "Error: Your system is not (based on) Arch Linux. Chaotic-AUR cannot be installed."
      exit 1
 elif [ "${isArtix}" == "ID=artix" ]; then
+     sleep 0s
+elif [ "${isVanillaArch}" == "ID=arch" ]; then
      sleep 0s
 fi
 
