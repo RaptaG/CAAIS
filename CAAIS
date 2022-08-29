@@ -15,6 +15,14 @@ startup() {
      echo "Current operation: ${action} Chaotic-AUR"
 }
 
+rootCheck() {
+     if [ "${EUID}" -ne 0 ]; then
+          echo "Error: Root permissions are required for ${fname} to work."
+          echo "Please run './${fname}' for more information."
+          exit 1
+     fi
+}
+
 # Check if the OS is (based on) Arch Linux
 if [ "${isArchBased}" == "" ]; then
      echo "Error: Your system is not (based on) Arch Linux. Chaotic-AUR cannot be installed."
@@ -24,14 +32,6 @@ elif [ "${isArtix}" == "ID=artix" ]; then
 elif [ "${isVanillaArch}" == "ID=arch" ]; then
      sleep 0s
 fi
-
-# Root permission checker
-rootCheck() {
-     if [ "${EUID}" -ne 0 ]; then
-          echo -e "Error: Root permissions are required for ${fname} to work.\nPlease run './${fname}' for more information."
-          exit 1
-     fi
-}
 
 # Download & install Chaotic-AUR
 install() {
