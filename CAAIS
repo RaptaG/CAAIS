@@ -2,7 +2,7 @@
 # Made by RaptaG, terminalmaid and TruncatedDinosour
 
 # Definitions
-ver="2.0-dev.2"
+ver="2.0-dev.3"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isVanillaArch="$(grep 'ID=arch' /etc/os-release)"
@@ -26,10 +26,12 @@ elif [ "${isVanillaArch}" == "ID=arch" ]; then
 fi
 
 # Root permission checker
-if [ "${EUID}" -ne 0 ]; then
-     echo -e "Error: Root permissions are required for ${fname} to work.\nPlease run 'sudo ./${fname} --help' for more information."
-     exit 1
-fi
+rootCheck() {
+     if [ "${EUID}" -ne 0 ]; then
+          echo -e "Error: Root permissions are required for ${fname} to work.\nPlease run './${fname}' for more information."
+          exit 1
+     fi
+}
 
 # Download & install Chaotic-AUR
 install() {
@@ -128,7 +130,7 @@ remove() {
      pamac build ${AURreinstall} --no-confirm > /dev/null 2>&1
 
      # Finish 
-     echo "Done! Now, all your Chaotic-AUR packages have now been reinstalled and working again, with Chaotic-AUR removed from your system!"
+     echo "Done. Now, all your Chaotic-AUR packages have now been reinstalled and working again, with Chaotic-AUR removed from your system!"
      exit 0
 }
 
@@ -160,15 +162,17 @@ case "$1" in
      exit 0
      ;;
 -i | --install)
+     rootCheck
      action="Install"
      install
      ;;
 -r | --remove)
+     rootCheck
      action="Remove"
      remove
      ;;
 *)
-     echo "Invalid option '$1'. Please run 'sudo ./$fname' to see the list of all the options availiable."
+     echo "Invalid option '$1'. Please run './${fname}' to see the list of all the options availiable."
      exit 1
      ;;
 esac
