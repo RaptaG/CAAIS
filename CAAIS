@@ -1,14 +1,13 @@
-#!/bin/bash
-# Made by RaptaG, terminalmaid and TruncatedDinosour
+#!/usr/bin/env bash
 
 # Definitions
-ver="2.0-dev.3"
+ver="2.0"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
-isVanillaArch="$(grep 'ID=arch' /etc/os-release)"
-isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release)"
-isArtix="$(grep 'ID=artix' /etc/os-release)"
-AURreinstall="$(pacman -Qm | awk '{print $1}')"
+isVanillaArch="$(grep 'ID=arch' /etc/os-release | awk -F 'ID=' '{print $2}')"
+isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release | awk -F 'ID_LIKE=' '{print $2}')"
+isArtix="$(grep 'ID=artix' /etc/os-release | awk -F 'ID=' '{print $2}')"
+foreignChaoticAURpacks="$(pacman -Qm | awk '{print $1}')"
 
 startup() {
      echo "CAAIS, version ${ver}"
@@ -24,13 +23,15 @@ rootCheck() {
 }
 
 # Check if the OS is (based on) Arch Linux
-if [ "${isArchBased}" == "" ]; then
+if [ "${isArtix}" == "artix" ]; then
+     sleep 0s
+elif [ "${isVanillaArch}" == "arch" ]; then
+     sleep 0s
+fi
+
+if [ "${isArchBased}" != "arch" ]; then
      echo "Error: Your system is not (based on) Arch Linux. Chaotic-AUR cannot be installed."
      exit 1
-elif [ "${isArtix}" == "ID=artix" ]; then
-     sleep 0s
-elif [ "${isVanillaArch}" == "ID=arch" ]; then
-     sleep 0s
 fi
 
 # Download & install Chaotic-AUR
@@ -61,9 +62,7 @@ install() {
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
      # Append in pacman.conf
-     if [ "${appendInPacmanConf}" == "[chaotic-aur]" ]; then
-          echo "Chaotic-AUR is already append in pacman.conf, skipping..."
-     else
+     if [ "${appendInPacmanConf}" != "[chaotic-aur]" ]; then
           echo "Appending Chaotic-AUR in pacman.conf..."
           echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
      fi
@@ -127,7 +126,7 @@ remove() {
      esac
 
      echo "Reinstalling..."
-     pamac build ${AURreinstall} --no-confirm > /dev/null 2>&1
+     pamac build ${foreignChaoticAURpacks} --no-confirm > /dev/null 2>&1
 
      # Finish 
      echo "Done. Now, all your Chaotic-AUR packages have now been reinstalled and working again, with Chaotic-AUR removed from your system!"
@@ -141,7 +140,7 @@ case "$1" in
      echo
      echo "-h, --help                        This help menu"
      echo
-     echo "-a, --about                       Display informaton about CAAIS (eg. version)"
+     echo "-a, --about                       Display informaton about CAAIS"
      echo
      echo "-i, --install                     Download and install Chaotic-AUR"
      echo
@@ -159,6 +158,20 @@ case "$1" in
      echo "1) RaptaG (Main developer)"
      echo "2) terminalmaid (Pull Request #1)"
      echo "3) TruncatedDinosour (Pull Request #2)"
+     echo
+     echo "Copyright © 2022 RaptaG"
+     echo
+     echo 'Licensed under the Apache License, Version 2.0 (the "License");'
+     echo "you may not use this file except in compliance with the License."
+     echo "You may obtain a copy of the License at"
+     echo
+     echo "      http://www.apache.org/licenses/LICENSE-2.0"
+     echo
+     echo "Unless required by applicable law or agreed to in writing, software"
+     echo 'distributed under the License is distributed on an "AS IS" BASIS,'
+     echo "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."
+     echo "See the License for the specific language governing permissions and"
+     echo "limitations under the License."
      exit 0
      ;;
 -i | --install)
