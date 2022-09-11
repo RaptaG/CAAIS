@@ -18,7 +18,7 @@ Chaotic-AUR, like the AUR (Arch User Repository), is availiable only on Arch-bas
 - Enter the [Releases Tab](https://github.com/RaptaG/CAAIS/releases) and download the latest version available and run the following command in the folder you installed CAAIS:
 
 ```
-chmod +x CAAIS.sh
+chmod +x CAAIS
 ```
 
 This will make it executable (working).
@@ -48,7 +48,7 @@ You can use the [Issues section](https://github.com/RaptaG/CAAIS/issues) to repo
 
 ## Contact with me / Discuss about CAAIS
 
-[GitHub Discussions](https://github.com/RaptaG/CAAIS/discussions) were recently activated. Feel free to start a discussion there!
+[GitHub Discussions](https://github.com/RaptaG/CAAIS/discussions) are available. Feel free to start a discussion there!
 
 ## Contributing
 
