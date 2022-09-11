@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Definitions
-ver="2.0"
+ver="2.1-dev.1"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isVanillaArch="$(grep 'ID=arch' /etc/os-release | awk -F 'ID=' '{print $2}')"
@@ -22,6 +22,15 @@ rootCheck() {
      fi
 }
 
+installCheck() {
+     cd /etc/pacman.d/
+     if [ -f chaotic-mirrorlist ]; then
+          isInstalled="true"
+     else
+          isInstalled="false"
+     fi
+}
+
 # Check if the OS is (based on) Arch Linux
 if [ "${isArtix}" == "artix" ]; then
      sleep 0s
@@ -37,6 +46,13 @@ fi
 # Download & install Chaotic-AUR
 install() {
      startup
+
+     installCheck
+     if [ "${isInstalled}" != "false" ]; then
+          echo -e "\nError: Chaotic-AUR is already installed."
+          exit 1
+     fi
+
      echo -n "Do you wish to proceed [Y/n] "
      read answer
      
@@ -79,6 +95,13 @@ install() {
 # Uninstall Chaotic-AUR
 remove() {     
      startup
+
+     installCheck
+     if [ "${isInstalled}" != "true" ]; then
+          echo -e "\nError: Chaotic-AUR is already uninstalled."
+          exit 1
+     fi
+
      echo -n "Do you wish to proceed? [y/N] "
      read answer
      
