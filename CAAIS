@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Definitions
-ver="2.1-dev.1"
+ver="2.1-dev.2"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isVanillaArch="$(grep 'ID=arch' /etc/os-release | awk -F 'ID=' '{print $2}')"
@@ -9,12 +9,12 @@ isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release | awk -F 'ID_LIKE=' '{print $
 isArtix="$(grep 'ID=artix' /etc/os-release | awk -F 'ID=' '{print $2}')"
 foreignChaoticAURpacks="$(pacman -Qm | awk '{print $1}')"
 
-startup() {
+function startup() {
      echo "CAAIS, version ${ver}"
      echo "Current operation: ${action} Chaotic-AUR"
 }
 
-rootCheck() {
+function rootCheck() {
      if [ "${EUID}" -ne 0 ]; then
           echo "Error: Root permissions are required for ${fname} to work."
           echo "Please run './${fname}' for more information."
@@ -22,7 +22,7 @@ rootCheck() {
      fi
 }
 
-installCheck() {
+function installCheck() {
      cd /etc/pacman.d/
      if [ -f chaotic-mirrorlist ]; then
           isInstalled="true"
@@ -44,7 +44,7 @@ if [ "${isArchBased}" != "arch" ]; then
 fi
 
 # Download & install Chaotic-AUR
-install() {
+function install() {
      startup
 
      installCheck
@@ -93,7 +93,7 @@ install() {
 }
 
 # Uninstall Chaotic-AUR
-remove() {     
+function remove() {     
      startup
 
      installCheck
@@ -158,7 +158,7 @@ remove() {
 
 # Find the option selected and run the correct command
 case "$1" in
--h | --help | "")
+-h | help | "")
      echo "Usage: ${fname} [OPTION]"
      echo
      echo "-h, --help                        This help menu"
@@ -173,7 +173,7 @@ case "$1" in
      echo "https://github.com/RaptaG/CAAIS"
      exit 0
      ;;
--a | --about)
+-a | about)
      echo "Version of CAAIS currently used: ${ver}"
      echo "GitHub release: https://github.com/RaptaG/CAAIS/releases/tag/${ver}"
      echo
@@ -197,12 +197,12 @@ case "$1" in
      echo "limitations under the License."
      exit 0
      ;;
--i | --install)
+-i | install)
      rootCheck
      action="Install"
      install
      ;;
--r | --remove)
+-r | remove)
      rootCheck
      action="Remove"
      remove
