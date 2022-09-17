@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Definitions
-ver="2.1-dev.3"
+ver="2.1-dev.4"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release | awk -F 'ID_LIKE=' '{print $2}')"
@@ -34,11 +34,13 @@ function installCheck() {
 case ${isException} in
 arch | artix)
      sleep 0s
+     ;;
 *)
      if [ "${isArchBased}" != "arch" ]; then
           echo "Error: Your system is not (based on) Arch Linux. Chaotic-AUR cannot be installed."
           exit 1
      fi
+     ;;
 esac
 
 # Download & install Chaotic-AUR
