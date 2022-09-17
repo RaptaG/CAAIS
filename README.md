@@ -8,7 +8,7 @@
   
 The **Chaotic-AUR Automated Install Script** (or _CAAIS_ for short) is a program (written in [Bash](https://www.gnu.org/software/bash)) which allows you to install and remove Chaotic-AUR **automatically** inside your system! It is based on the commands provided by [the Chaotic-AUR website](https://aur.chaotic.cx), including more functions and features!
 
-Chaotic-AUR, like the AUR (Arch User Repository), is availiable only on Arch-based Linux distributions. So, if you try to install it anywhere else, CAAIS will tell that you that it is not possible.
+Remember, Chaotic-AUR, like the AUR (Arch User Repository), is availiable **only** on Arch based Linux distributions.
 
 </div>
 
