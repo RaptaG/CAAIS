@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Definitions
-ver="2.1-dev.4"
+ver="2.1-dev.5"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release | awk -F 'ID_LIKE=' '{print $2}')"
@@ -22,8 +22,7 @@ function rootCheck() {
 }
 
 function installCheck() {
-     cd /etc/pacman.d/
-     if [ -f chaotic-mirrorlist ]; then
+     if [ "$(find /etc/pacman.d/ -name chaotic-mirrorlist)" == "/etc/pacman.d/chaotic-mirrorlist" ]; then
           isInstalled="true"
      else
           isInstalled="false"
