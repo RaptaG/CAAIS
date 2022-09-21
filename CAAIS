@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Definitions
-ver="2.1-dev.5"
+ver="2.1"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release | awk -F 'ID_LIKE=' '{print $2}')"
@@ -87,7 +87,7 @@ function install() {
      pacman -Sy > /dev/null 2>&1
 
      # Finish
-     echo "Done! Now Chaotic-AUR should be installed and working in your system!"
+     echo "Chaotic-AUR has been successfully installed!"
      exit 0
 }
 
@@ -134,12 +134,12 @@ function remove() {
      pacman -Sy > /dev/null 2>&1
 
      # AUR convertion
-     echo "Chaotic-AUR has been removed and all the packages you had installed from it are not working anymore."
-     echo -n "Do you wish to reinstall them from AUR? [Y/n] "
+     echo -n "Do you wish to reinstall your old Chaotic-AUR packages from AUR? [Y/n] "
      read answer
 
      case "${answer}" in
      [nN])
+          echo :"Chaotic-AUR has been successfully removed!"
           exit 0
           ;;
      *)
@@ -151,7 +151,7 @@ function remove() {
      pamac build ${foreignChaoticAURpacks} --no-confirm > /dev/null 2>&1
 
      # Finish 
-     echo "Done. Now, all your Chaotic-AUR packages have now been reinstalled and working again, with Chaotic-AUR removed from your system!"
+     echo "Chaotic-AUR has been successfully removed and all your Chaotic-AUR packages have been reinstalled!"
      exit 0
 }
 
