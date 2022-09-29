@@ -3,10 +3,12 @@
 # Chaotic-AUR Automated Install Script
 
 [![GitHub downloads](https://img.shields.io/github/downloads/RaptaG/CAAIS/total?color=158000&logo=github)](https://github.com/RaptaG/CAAIS/releases)
-[![Total Size](https://img.shields.io/github/repo-size/RaptaG/CAAIS?color=660099&label=Total%20Size)](https://github.com/RaptaG/CAAIS/find/main)<br/>
+[![Latest release](https://img.shields.io/github/v/release/RaptaG/CAAIS?label=Latest%20release)](https://github.com/RaptaG/CAAIS/releases/tag/2.2)<br />
+[![License](https://img.shields.io/github/license/RaptaG/CAAIS?label=License)](https://github.com/RaptaG/CAAIS/blob/main/LICENSE)
+[![Total Size](https://img.shields.io/github/repo-size/RaptaG/CAAIS?color=660099&label=Total%20size)](https://github.com/RaptaG/CAAIS/find/main)<br/>
 [![Last commit](https://img.shields.io/github/last-commit/RaptaG/CAAIS?color=lightblue&label=Last%20commit)](https://github.com/RaptaG/CAAIS/commits/main)
-  
-The **Chaotic-AUR Automated Install Script** (or _CAAIS_ for short) is a program (written in [Bash](https://www.gnu.org/software/bash)) which allows you to install and remove Chaotic-AUR **automatically** inside your system! It is based on the commands provided by [the Chaotic-AUR website](https://aur.chaotic.cx), including more functions and features!
+ 
+ The **Chaotic-AUR Automated Install Script** (or _CAAIS_ for short) is a program (written in [Bash](https://www.gnu.org/software/bash)) which allows you to install and remove Chaotic-AUR **automatically** inside your system! It is based on the commands provided by [the Chaotic-AUR website](https://aur.chaotic.cx), including more functions and features!
 
 Remember, Chaotic-AUR, like the AUR (Arch User Repository), is availiable **only** on Arch based Linux distributions.
 
@@ -65,7 +67,3 @@ If you like this project, you can give it a star (click the `Star ⭐` button on
 - [TruncatedDinosour](https://github.com/TruncatedDinosour), for improving the original code, on [#2](https://github.com/RaptaG/CAAIS/pull/2)
 - [Linux.Chat](https://linux.chat/) [Discord server](https://discord.com/invite/fA7UuAAhzt), and its members who helped me with some parts of the code<br />(special thanks to [Theros](https://github.com/therosin))
 - [RaptaG](https://github.com/RaptaG) (myself), for the idea and for making the script itself
-
-## License
-
-This project is licensed under the [`Apache-2.0`](LICENSE) license.
