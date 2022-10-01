@@ -17,7 +17,7 @@
 #   along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Definitions
-ver="2.2"
+ver="2.3-dev.1"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release | awk -F 'ID_LIKE=' '{print $2}')"
@@ -68,18 +68,6 @@ function install() {
           exit 1
      fi
 
-     echo -n "Do you wish to proceed [Y/n] "
-     read answer
-     
-     case "${answer}" in
-     [nN])
-          exit 0
-          ;;
-     *)
-          unset answer
-          ;;
-     esac
-
      # Key
      echo "Installing the key..."
      pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com > /dev/null 2>&1
@@ -110,24 +98,11 @@ function install() {
 # Uninstall Chaotic-AUR
 function remove() {     
      startup
-
      installCheck
      if [ "${isInstalled}" != "true" ]; then
           echo -e "\nError: Chaotic-AUR is already uninstalled."
           exit 1
      fi
-
-     echo -n "Do you wish to proceed? [y/N] "
-     read answer
-     
-     case "${answer}" in
-     [yY])
-          unset answer
-          ;;
-     *)
-          exit 0
-          ;;
-     esac
 
      # Key
      echo "Deleting the key..."
@@ -155,7 +130,7 @@ function remove() {
 
      case "${answer}" in
      [nN])
-          echo :"Chaotic-AUR has been successfully removed!"
+          echo "Chaotic-AUR has been successfully removed!"
           exit 0
           ;;
      *)
@@ -164,6 +139,7 @@ function remove() {
      esac
 
      echo "Reinstalling..."
+     pacman -Rns ${foreignChaoticAURpacks} --noconfirm > /dev/null 2>&1
      pamac build ${foreignChaoticAURpacks} --no-confirm > /dev/null 2>&1
 
      # Finish 
@@ -184,7 +160,7 @@ case "$1" in
      echo
      echo "-r, --remove                      Remove Chaotic-AUR from your system"
      echo
-     echo "The source code, the license and all the info related is availiable here:"
+     echo "You can access the GithUb repo for help and information here:"
      echo "https://github.com/RaptaG/CAAIS"
      exit 0
      ;;
