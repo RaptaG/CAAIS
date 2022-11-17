@@ -16,8 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-# Definitions
-ver="2.3-dev.1"
+ver="2.3-dev.2"
 fname="$(basename $0)"
 appendInPacmanConf="$(grep 'chaotic-aur' /etc/pacman.conf)"
 isArchBased="$(grep 'ID_LIKE=arch' /etc/os-release | awk -F 'ID_LIKE=' '{print $2}')"
@@ -58,7 +57,6 @@ arch | artix)
      ;;
 esac
 
-# Download & install Chaotic-AUR
 function install() {
      startup
 
@@ -68,64 +66,58 @@ function install() {
           exit 1
      fi
 
-     # Key
      echo "Installing the key..."
      pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com > /dev/null 2>&1
      pacman-key --lsign-key FBA220DFC880C036 > /dev/null 2>&1
 
-     # Keyring & mirrorlist
      echo "Downloading the keyring..."
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
      echo "Downloading the mirrorlist..."
      pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm > /dev/null 2>&1
 
-     # Append in pacman.conf
      if [ "${appendInPacmanConf}" != "[chaotic-aur]" ]; then
           echo "Appending Chaotic-AUR in pacman.conf..."
           echo -e "\r\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
      fi
 
-     # Refresh mirrorlists
      echo "Refreshing the mirrorlists..."
      pacman -Sy > /dev/null 2>&1
 
-     # Finish
      echo "Chaotic-AUR has been successfully installed!"
      exit 0
 }
 
-# Uninstall Chaotic-AUR
 function remove() {     
      startup
+
      installCheck
      if [ "${isInstalled}" != "true" ]; then
           echo -e "\nError: Chaotic-AUR is already uninstalled."
           exit 1
      fi
 
-     # Key
      echo "Deleting the key..."
      pacman-key --delete 3FFA0B5E092ED4095E26F69B8ADB4AEC585061CF > /dev/null 2>&1
 
-     # Keyring & mirrorlist
      echo "Uninstalling the keyring..."
      pacman -Rns chaotic-keyring --noconfirm > /dev/null 2>&1
 
      echo "Uninstalling the mirrorlist..."
      pacman -Rns chaotic-mirrorlist --noconfirm > /dev/null 2>&1
 
-     # Remove from pacman.conf
      echo "Removing Chaotic-AUR from pacman.conf..."
      sed -i '/chaotic-aur/d' /etc/pacman.conf
      sed -i '/chaotic-mirrorlist/d' /etc/pacman.conf
 
-     # Refresh mirrorlists
      echo "Refreshing the mirrorlists..."
      pacman -Sy > /dev/null 2>&1
 
      # AUR convertion
-     echo -n "Do you wish to reinstall your old Chaotic-AUR packages from AUR? [Y/n] "
+     echo "Do you wish to reinstall your old Chaotic-AUR packages from AUR?"
+     echo "The following packages will be affected:"
+     echo "${foreignAURpacks}"
+     echo -n "Procced? [Y/n] "
      read answer
 
      case "${answer}" in
@@ -160,16 +152,19 @@ case "$1" in
      echo
      echo "-r, --remove                      Remove Chaotic-AUR from your system"
      echo
-     echo "You can access the GithUb repo for help and information here:"
-     echo "https://github.com/RaptaG/CAAIS"
+     echo "Source code: https://github.com/RaptaG/CAAIS"
      exit 0
      ;;
 -a | about)
      echo "Version of CAAIS currently used: ${ver}"
-     echo "GitHub release: https://github.com/RaptaG/CAAIS/releases/tag/${ver}"
+
+     if [ ${ver} != "*.*-dev.*" ]; then
+          echo "GitHub release: https://github.com/RaptaG/CAAIS/releases/tag/${ver}"
+     fi
+
      echo
      echo "Current contributors:"
-     echo "1) RaptaG (Main developer)"
+     echo "1) RaptaG (Head developer)"
      echo "2) terminalmaid (Pull Request #1)"
      echo "3) TruncatedDinosour (Pull Request #2)"
      echo
